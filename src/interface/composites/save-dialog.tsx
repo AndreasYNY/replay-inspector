@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from "@/interface/components/ui/dialog";
 import { OsuRenderer } from "@/osu/OsuRenderer";
-import { scoreEncoder, state } from "@/utils";
+import { scoreEncoder, state, updateReplayMetadata } from "@/utils";
 import { useState } from "react";
 export function SaveDialog() {
   const { saveDialog } = state();
@@ -28,9 +28,10 @@ export function SaveDialog() {
         <DialogFooter>
           <Button type="submit" disabled={isLoading} onClick={async () => {
             setIsLoading(true)
+            updateReplayMetadata(OsuRenderer.replay)
             const buffer = await scoreEncoder.encodeToBuffer(OsuRenderer.replay, OsuRenderer.beatmap)
 
-            var blob = new Blob([buffer], { type: "application/pdf" });
+            var blob = new Blob([buffer], { type: "application/octet-stream" });
             var link = document.createElement('a');
             link.href = window.URL.createObjectURL(blob);
             var fileName = `${OsuRenderer.replay.replay?.hashMD5}.osr`;
@@ -42,6 +43,7 @@ export function SaveDialog() {
           </Button>
           <Button type="submit" disabled={isLoading || !location.hostname.startsWith("localhost")} onClick={async () => {
             setIsLoading(true)
+            updateReplayMetadata(OsuRenderer.replay)
             const buffer = await scoreEncoder.encodeToBuffer(OsuRenderer.replay, OsuRenderer.beatmap)
             var blob = new Blob([buffer], { type: "application/octet-stream" });
 
