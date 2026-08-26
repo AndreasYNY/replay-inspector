@@ -4,6 +4,7 @@ import { Slider } from "../components/ui/slider";
 import { state } from "@/utils";
 import { Button } from "../components/ui/button";
 import { ArrowLeft, ArrowRight, PauseIcon, PlayIcon } from "lucide-react";
+import { KeyTimeline } from "./keypress-timeline";
 
 export function SongSlider() {
   const { beatmap, replay, playing, time } = state();
@@ -48,6 +49,8 @@ export function SongSlider() {
         </div>
         <div className="flex w-full justify-end"></div>
       </div>
+
+      <KeyTimeline />
 
       <div className="relative w-full">
         <Slider
