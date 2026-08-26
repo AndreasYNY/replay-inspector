@@ -2,11 +2,11 @@
   "name": "sample-p5-editor",
   "version": "0.0.0",
   "scripts": {
-    "postinstall": "git submodule update --init && npm run build:osu-parsers",
-    "build:osu-parsers": "cd osu-parsers && ([ -d node_modules ] || npm install) && ([ -d lib ] || npm run build)",
-    "predev": "npm run build:osu-parsers",
+    "postinstall": "git submodule update --init && bun run build:osu-parsers",
+    "build:osu-parsers": "cd osu-parsers && ([ -d node_modules ] || bun install) && ([ -d lib ] || bun run build)",
+    "predev": "bun run build:osu-parsers",
     "dev": "vite",
-    "prebuild": "npm run build:osu-parsers",
+    "prebuild": "bun run build:osu-parsers",
     "build": "vite build",
     "serve": "vite preview",
     "tsc": "tsc"
