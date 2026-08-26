@@ -152,7 +152,6 @@ export class Drawer {
       const ctx = g.drawingContext;
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
-      g.translate(origin.x, origin.y);
       g.noFill();
 
       g.strokeWeight(radius * 2 - 10);
@@ -187,7 +186,9 @@ export class Drawer {
       this.imageCache[cacheKey] = g;
     }
     Drawer.p.imageMode(Drawer.p.CORNER);
-    Drawer.p.image(this.imageCache[cacheKey], -256, -192, 512 * 2, 384 * 2);
+    // The path is baked relative to a fixed reference, so stamp the image at
+    // the slider's actual head position (origin) rather than a fixed offset.
+    Drawer.p.image(this.imageCache[cacheKey], origin.x - 256, origin.y - 192, 512 * 2, 384 * 2);
 
     Drawer.p.pop();
   }
