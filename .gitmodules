@@ -1,0 +1,3 @@
+[submodule "osu-parsers"]
+	path = osu-parsers
+	url = https://github.com/kionell/osu-parsers

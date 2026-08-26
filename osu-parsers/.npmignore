@@ -1,9 +1,0 @@
-/**
-!/lib
-!/lib/**
-!.eslintignore
-!.eslintrc.json
-!.npmignore
-!LICENSE
-!package.json
-!README.md
