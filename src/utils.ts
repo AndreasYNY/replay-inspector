@@ -12,6 +12,7 @@ import {
 } from "@osujs/core";
 
 import { IMod, ReplayButtonState, Score } from "osu-classes";
+import { GameplayAnalyzer } from "@/osu/GameplayAnalyzer";
 import { GameState } from "@osujs/core/gameplay/GameState";
 import p5, { Image } from "p5";
 import { create } from "zustand";
@@ -210,4 +211,27 @@ export let p: p5;
 
 export function setEnv(_p: p5) {
   p = _p;
+}
+
+// Recompute the replay's ScoreInfo hit counts + accuracy from the (possibly
+// edited) judgements so the exported .osr metadata reflects the new play.
+export function updateReplayMetadata(replay: Score) {
+  const raw = GameplayAnalyzer.renderJudgements || {};
+  let c300 = 0;
+  let c100 = 0;
+  let c50 = 0;
+  let cMiss = 0;
+  for (const type of Object.values(raw)) {
+    if (type === "GREAT") c300++;
+    else if (type === "OK") c100++;
+    else if (type === "MEH") c50++;
+    else if (type === "MISS") cMiss++;
+  }
+  const info = replay.info as any;
+  info.count300 = c300;
+  info.count100 = c100;
+  info.count50 = c50;
+  info.countMiss = cMiss;
+  const total = c300 + c100 + c50 + cMiss;
+  info.accuracy = total > 0 ? (c300 + c100 / 3 + c50 / 6) / total : 0;
 }
